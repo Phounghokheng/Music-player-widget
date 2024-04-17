@@ -4,11 +4,12 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.jar.JarException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import java.awt.Graphics;
+
+import javax.management.JMException;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 public class MainClass 
@@ -50,7 +51,7 @@ public class MainClass
     
     
     
-    public void play(String path)
+    public void play(String path) throws JMException
     {
      try{
          FIS=new FileInputStream(path);
@@ -60,7 +61,7 @@ public class MainClass
         totallength=FIS.available();
         
      }
-    catch(FileNotFoundException | JavaLayerException ex)
+    catch(FileNotFoundException ex)
     {
 
         
@@ -74,21 +75,21 @@ public class MainClass
  @Override
         public void run()
         {
-            try {                
-                System.out.println(".asadsssaadsad");
-                
-                player.play();
-                
-                System.out.println(".run()");
-                if(player.isComplete() && MP3PlayerGUI.count==1)
-                {
-                    System.out.print("Sssss");
+            System.out.println(".asadsssaadsad");
+            
+            player.play();
+            
+            System.out.println(".run()");
+            if(player.isComplete() && MP3PlayerGUI.count==1)
+            {
+                System.out.print("Sssss");
+                try {
                     play(filename);
-                     }
+                } catch (JMException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-             catch (JavaLayerException ex) {
-                Logger.getLogger(MainClass.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                 }
         }
     }.start();
 }
@@ -103,7 +104,7 @@ public void resume()
         player=new Player(BIS);
         FIS.skip(totallength-songremaining);
                }
-    catch(FileNotFoundException | JavaLayerException ex)
+    catch(FileNotFoundException | JarException ex)
     {
 
         
